@@ -61,17 +61,23 @@ func main() {
 		return c.Status(201).JSON(todo)
 	})
 
-	// Update todo
+	// Menambahkan route PUT untuk path "/api/todos/:id"
 	app.Put("/api/todos/:id", func(c *fiber.Ctx) error {
+		// Mengambil parameter id dari URL
 		id := c.Params("id")
 
+		// Melakukan iterasi pada slice todos
 		for i, todo := range todos {
+			// Memeriksa apakah ID todo sama dengan id yang diambil dari URL
 			if fmt.Sprintf("%d", todo.ID) == id {
+				// Menandai todo sebagai selesai
 				todos[i].Completed = true
+				// Mengembalikan status 200 dan JSON dari todo yang telah diperbarui
 				return c.Status(200).JSON(todos[i])
 			}
 		}
 
+		// Mengembalikan status 404 dan pesan error jika todo tidak ditemukan
 		return c.Status(404).JSON(fiber.Map{
 			"error": "Todo not found",
 		})
