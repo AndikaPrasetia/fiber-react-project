@@ -23,14 +23,10 @@ func main() {
 	todos := []Todo{}
 
 	// Menambahkan route GET untuk path "/"
-	app.Get("/", func(c *fiber.Ctx) error {
+	app.Get("/api/todos", func(c *fiber.Ctx) error {
 
 		// Mengembalikan status 200 dan JSON response
-		return c.Status(200).JSON(fiber.Map{
-
-			// Pesan yang dikembalikan dalam response
-			"message": "It's working with Air! and valid GET request in Postman",
-		})
+		return c.Status(200).JSON(todos)
 	})
 
 	// Menambahkan route POST untuk path "/api/todos"
@@ -74,6 +70,29 @@ func main() {
 				todos[i].Completed = true
 				// Mengembalikan status 200 dan JSON dari todo yang telah diperbarui
 				return c.Status(200).JSON(todos[i])
+			}
+		}
+
+		// Mengembalikan status 404 dan pesan error jika todo tidak ditemukan
+		return c.Status(404).JSON(fiber.Map{
+			"error": "Todo not found",
+		})
+	})
+
+	// Menambahkan route DELETE untuk path "/api/todos/:id"
+	app.Delete("/api/todos/:id", func(c *fiber.Ctx) error {
+		// Mengambil parameter id dari URL
+		id := c.Params("id")
+		// Melakukan iterasi pada slice todos
+		for i, todo := range todos {
+			// Memeriksa apakah ID todo sama dengan id yang diambil dari URL
+			if fmt.Sprintf("%d", todo.ID) == id {
+				// Menghapus todo dari slice todos
+				todos = append(todos[:i], todos[i+1:]...)
+				// Mengembalikan status 200 dan pesan bahwa todo telah dihapus
+				return c.Status(200).JSON(fiber.Map{
+					"message": "Todo deleted",
+				})
 			}
 		}
 
