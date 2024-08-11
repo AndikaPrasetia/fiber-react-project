@@ -8,9 +8,9 @@ import (
 )
 
 type Todo struct {
-	ID    int    `json:"id"`
-	Title string `json:"completed"`
-	Body  string `json:"body"`
+	ID        int    `json:"id"`
+	Completed bool   `json:"completed"`
+	Body      string `json:"body"`
 }
 
 func main() {
@@ -59,6 +59,22 @@ func main() {
 		todos = append(todos, *todo)
 		// Mengembalikan status 201 dan JSON dari todo yang baru dibuat
 		return c.Status(201).JSON(todo)
+	})
+
+	// Update todo
+	app.Put("/api/todos/:id", func(c *fiber.Ctx) error {
+		id := c.Params("id")
+
+		for i, todo := range todos {
+			if fmt.Sprintf("%d", todo.ID) == id {
+				todos[i].Completed = true
+				return c.Status(200).JSON(todos[i])
+			}
+		}
+
+		return c.Status(404).JSON(fiber.Map{
+			"error": "Todo not found",
+		})
 	})
 
 	// Menjalankan server pada port 8080 dan log error jika terjadi
