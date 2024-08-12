@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 )
 
 type Todo struct {
@@ -20,6 +22,18 @@ func main() {
 	// Membuat instance baru dari aplikasi Fiber
 	app := fiber.New()
 
+	// Memuat file .env
+	err := godotenv.Load(".env")
+	// Memeriksa apakah terjadi kesalahan saat memuat file .env
+	if err != nil {
+		// Menampilkan pesan error dan menghentikan program jika terjadi kesalahan
+		log.Fatal("Error loading .env file")
+	}
+
+	// Mengambil nilai dari variabel lingkungan PORT
+	PORT := os.Getenv("PORT")
+
+	// Inisialisasi slice kosong untuk menyimpan daftar todo
 	todos := []Todo{}
 
 	// Menambahkan route GET untuk path "/"
@@ -102,6 +116,6 @@ func main() {
 		})
 	})
 
-	// Menjalankan server pada port 8080 dan log error jika terjadi
-	log.Fatal(app.Listen(":8080"))
+	// Menjalankan server pada port yang ditentukan
+	log.Fatal(app.Listen(":" + PORT))
 }
