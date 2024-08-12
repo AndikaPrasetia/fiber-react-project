@@ -1,2 +1,23 @@
 .env
-bin
+node_modules
+
+# Compiled object files, Static and Dynamic Libraries
+.o
+.a
+.so
+
+# Folders
+_obj
+_test
+vendor/
+
+# Executables
+*.exe
+*.out
+
+# Go specific files
+# Compiled binaries for packages and commands
+/bin/
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
