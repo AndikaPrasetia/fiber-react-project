@@ -65,7 +65,7 @@ func main() {
 	app.Put("/todo/:id", updateTodo)
 	app.Delete("/todo/:id", deleteTodo)
 
-	// Mengambil port dari variabel lingkungan, default ke 8080 jika tidak ada
+	// Mengambil port dari variabel env, default ke 8080 jika tidak ada
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
