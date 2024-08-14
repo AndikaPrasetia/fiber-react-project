@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -58,6 +59,12 @@ func main() {
 
 	// Membuat instance Fiber
 	app := fiber.New()
+
+	// Menggunakan middleware CORS untuk mengizinkan semua domain
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:5173",
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
 
 	// Menambahkan rute untuk mendapatkan semua todo
 	app.Get("/todos", getTodos)
