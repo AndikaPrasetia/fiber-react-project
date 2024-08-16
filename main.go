@@ -17,9 +17,9 @@ import (
 
 // Todo struct merepresentasikan sebuah todo item
 type Todo struct {
-	ID        primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"` // identifikasi unik untuk setiap todo
-	Completed bool               `json:"completed"`                         // menunjukkan status penyelesaian todo
-	Body      string             `json:"body"`                              // deskripsi dari todo
+	ID        primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"` // identifikasi unik untuk setiap todo
+	Completed bool               `json:"completed"`                          // menunjukkan status penyelesaian todo
+	Body      string             `json:"body"`                               // deskripsi dari todo
 }
 
 // Deklarasi variabel global untuk koleksi MongoDB
@@ -68,9 +68,9 @@ func main() {
 
 	// Menambahkan rute untuk mendapatkan semua todo
 	app.Get("/todos", getTodos)
-	app.Post("/todo", createTodo)
-	app.Put("/todo/:id", updateTodo)
-	app.Delete("/todo/:id", deleteTodo)
+	app.Post("/todos", createTodo)
+	app.Put("/todos/:id", updateTodo)
+	app.Delete("/todos/:id", deleteTodo)
 
 	// Mengambil port dari variabel env, default ke 8080 jika tidak ada
 	port := os.Getenv("PORT")
